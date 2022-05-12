@@ -1,15 +1,25 @@
 
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
     <head>
         <title>| Tetris | </title>
-        <script src = "game.js"></script>
+        
         <link rel="stylesheet" href = "game.css">
+        
     </head>
     <body>
-        <canvas id = "myCanvas" width = "600" height = "600"></canvas> 
-        <div id = "buttonDiv" >
-            <button id="playButton" onclick= "myFunction()"> Play </button>
+        <div id = "container">
+            <div id = "gameOver"></div>
+            <canvas id = "myCanvas" width = "600" height = "600"></canvas> 
+            <div id = "buttonDiv" >
+                <button id="playButton" onclick= "startGame()"> Play </button>
+            </div>
+            <div id = "scoreLabel">
+                Score: 0
+            </div>
+            
         </div>
+        <script src = "game.js"></script>    
     </body>
+    
 </html>

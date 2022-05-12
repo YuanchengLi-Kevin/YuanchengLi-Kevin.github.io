@@ -1,26 +1,60 @@
 html, body {
-    height: 100%;
+    
     overflow: hidden;
 }
 
+
+
+#playButton{
+    height:100%;
+    width: 100px;
+}
+
+#buttonDiv{ 
+    height: 50px;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+ #gameOver{
+    z-index: 1;
+    height: 100px;
+    width: 100%;
+
+    position:absolute;
+    top:200px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family:monospace;
+    color:white;
+    font-size: 40px;
+}
+#scoreLabel{
+    z-index: 3;
+    position: absolute;
+
+    left: 700px;
+    top: 50px;
+
+    width: 150px;
+
+    font-family:monospace;
+    color:black;
+    font-size: 25px;
+
+}
 canvas{
+    z-index: 0;
     padding-left: 0;
     padding-right: 0;
     margin-left: auto;
     margin-right: auto;
     display: block;
-    width: 25%;
-}
-
-#playButton{
-    position: relative;
-    height:100%;
-    width: 5%;
-    left: 50%;
-}
-
-#buttonDiv{
-    max-height: 200px;
-    height: 5%;
-    width: 100%;
+    
 }

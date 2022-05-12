@@ -40,7 +40,17 @@ var overlay = [
 
 var overLayColor = `rgb(127, 127, 127)`
 
-var temp;
+var offset = 25;
+
+var inGame = false;
+var gameStarted = false;
+
+var gameLoop;
+var textOverlay = null;
+
+var temp = null;
+
+var score = 0;
 
 var time = 0;
 var yTime = 0;
@@ -92,6 +102,7 @@ class block {
 }
 function initAll(){
     canvas = document.getElementById("myCanvas");
+
     ctx = canvas.getContext('2d');
     canvas.width = 300;
     canvas.height = 550;
@@ -120,8 +131,61 @@ function initAll(){
             right = 0;
         }
     }, false);
+    //document.getElementById("gameOver").innerHTML = '<b>Game Over</b>';
+    draw();
+    //document.getElementById("gameOver").innerHTML = '<b>Game Over</b>';
+   // setInterval(draw, 16)
+}
 
-    setInterval(draw, 16)
+function startGame(){
+    if (inGame){
+        clearInterval(gameLoop);
+        inGame = false;
+    }
+    else if (inGame == false) {
+
+        if (temp!= null){
+            temp.pivotY = 2;
+            temp.pivotX = 5;
+        }
+        else if (temp == null) {
+            temp = new block();
+        }
+
+        //temp = new block();
+        for (let x =0; x<10; x++) {
+            for (let y =0; y< 20; y++) {
+                tempGrid[x][y] = 0;
+            }
+        }
+        for (let x =0; x<10; x++) {
+            for (let y =0; y< 20; y++) {
+                stationGrid[x][y] = 0;
+            }
+        }
+        inGame = true;
+        gameStarted = true;
+
+        gameLoop = setInterval(draw,16);
+
+        score = 0;
+        document.getElementById("scoreLabel").innerHTML = "Score: " + score;
+        //if (textOverlay != null){
+        clearInterval(textOverlay);
+        textOverlay = null;
+       // }
+        document.getElementById("playButton").disabled = true;
+        //document.getElementById("gameOver").innerHTML = '<b>Game Over</b>';
+        
+    }
+    
+};
+
+
+function show(){
+   //document.getElementById("gameOver").innerHTML = "Game Over";
+   ctx.font = "40px monospace";
+   ctx.fillText("Game Over", 50, 220);
 }
 
 function draw(){
@@ -161,7 +225,24 @@ function draw(){
             else if(tempx >=1) {
                 //console.log(tempx);
                 if (stationGrid[tempx-1][tempy] > 0){
-                    temp.landed = true;	
+                    if (temp.pivotY == 2){
+                        console.log("Game over");
+                        inGame = false;
+                       // ctx.beginPath();
+                       //document.getElementById("gameOver").innerHTML = '<b>Game Over</b>';
+                        document.getElementById("playButton").disabled = false;
+                        clearInterval(gameLoop);
+                        //show();
+                        if(textOverlay == null){
+                            textOverlay = setInterval(show, 500);
+                        }
+                        
+                    
+                    }
+                    else{
+                        temp.landed = true;	
+                    }
+                    
                 }
             }
             
@@ -307,17 +388,17 @@ function draw(){
             if(tempGrid[x][y] == 0) {
                 
                 ctx.fillStyle = 'black'
-                ctx.fillRect((25*x), (25*y), 25, 25);
+                ctx.fillRect(offset + (25*x), (25*y), 25, 25);
             }
             else if (tempGrid[x][y]>=8) {
                 
                 ctx.fillStyle = overLayColor
-                ctx.fillRect((25*x), (25*y), 25, 25);
+                ctx.fillRect(offset + (25*x), (25*y), 25, 25);
             }
             else if (Number(tempGrid[x][y]) <8) {	
                 
                ctx.fillStyle = (overlay[temp.index]);
-                ctx.fillRect((25*x), (25*y), 25, 25);
+                ctx.fillRect(offset + (25*x), (25*y), 25, 25);
             }
             
         }
@@ -331,7 +412,7 @@ function draw(){
             else {
                 
                 ctx.fillStyle = overlay[(stationGrid[x][y])-1];
-                ctx.fillRect((25*x), (25*y), 25, 25);
+                ctx.fillRect(offset + (25*x), (25*y), 25, 25);
             }
         }
     }
@@ -339,7 +420,7 @@ function draw(){
     for (let x =0; x<=10; x++) {
         for (let y =0; y< 20; y++) {
             ctx.fillStyle = 'white';
-            ctx.fillRect((x*25), 22 + (y*25), 2, 2);
+            ctx.fillRect(offset + (x*25), 22 + (y*25), 2, 2);
         }
     }
         
@@ -351,10 +432,13 @@ function draw(){
                 fullRow = false;
             }
         }
-        if (fullRow) {		
+        if (fullRow) {
+            score+= 10;
+            document.getElementById("scoreLabel").innerHTML = "Score: " + score;		
             for (let x = 0; x < 10; x++) {
                 for(let y = count; y>0; y--) {
                     stationGrid[x][y] = stationGrid[x][y-1];
+                    
                 }
             }
         }
@@ -363,6 +447,13 @@ function draw(){
     if (canSpawn) {
         temp = new block();
     }
+
+    if (gameStarted == true && inGame == false){
+        //document.getElementById("gameOver").innerHTML = '<b>Game Over</b>';
+        //setInterval(show, 1000);
+        console.log("Game over message");
+    }
+    
 }
 
 function makeOverlay() {
