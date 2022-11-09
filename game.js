@@ -1,5 +1,5 @@
 window.onload = initAll;
-
+const page = window.open('/pages/tetris.html')
 var  tempGrid = [
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
